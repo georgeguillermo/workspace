@@ -11,6 +11,7 @@ puzzle_3 = False
 
 while game_running:
     if floor == 'bottom':
+        monster_health = 5
         if first_time_bottom == True:
             print("You have found yourself at the bottom of a multi-floored dungeon. You are in an unknown room, but you see two doors, one to your left, and the other to your right.")
             print("")
@@ -60,7 +61,8 @@ while game_running:
         print("3. Straight ahead")
         first_time_middle = False
         answer_1 = int(input(""))
-
+        if answer_1 != 1 and answer_1 != 2 and answer_1 != 3:
+            print("That is not a valid doorway number :(.")
         if answer_1 == 1:
             if puzzle_1 == False:            
                 print("Before you, you see a locked glass box containing a helmet.")
@@ -116,7 +118,10 @@ while game_running:
                 print("Behind the monster, you see it was guarding a wooden door, so you enter it because there is nowhere else for you to go")
                 floor = 'top'
     if floor == 'top':
-        monster_health = 5
+        if monster_health <= 0:
+            game_running = False
+            floor = 'end'
+            break
         monster_magic = 0
         your_health = 5
         rng = random.randint(1, 5)
@@ -125,6 +130,21 @@ while game_running:
         print("Seeing that this monster looks actually suited for battle, you assume this is the mastermind of the dungeon since he seems smart enough to make one, but not smart enough to sharpen his sword apparently.")
         print("The monster charges at you, and you have no choice but to fight it.")
         while monster_health > 0:
+            print("Your health: " + str(your_health) + "/5")
+            print("Monster health: " + str(monster_health) + "/5")
+            print("Monster magic: " + str(monster_magic) + "/3")
+            if your_health <= 0:
+                print("You have been defeated by the monster, and you are sent back to the beginning of the dungeon.")
+                floor = 'bottom'
+                first_time_bottom = True
+                first_time_right = True
+                first_time_middle = True
+                puzzle_1 = False
+                puzzle_2 = False
+                puzzle_3 = False
+                strength = 0
+                monster_health = 0
+                break
             rng = random.randint(0, 4)
             if rng == 0:
                 print("It raises its sword above its head while rushing at you, probably preparing to hit you when you get close enough.")
@@ -207,6 +227,6 @@ while game_running:
                         print("You try to attack the monster, just barely interrupting its spell before it fully casts it.")
                         monster_health -= 1
                         monster_magic = 0
-        print("You have defeated the monster, and you see a door behind it, so you enter it.")
-        print("You see the beautiful outside as you escape the dungeon once and for all.")
-        game_running = False
+print("You have defeated the monster, and you see a door behind it, so you enter it.")
+print("You see the beautiful outside as you escape the dungeon once and for all.")
+    
